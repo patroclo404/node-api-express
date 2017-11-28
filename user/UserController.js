@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 
-router.use(bodyParser.urlencoded({ extended: true }));
-
+router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.json());
 var User = require('./User');
 
 
@@ -16,7 +16,7 @@ router.post('/', function (req, res) {
       password : req.body.password
     }, 
     function (err, user) {
-      if (err) return res.status(500).send("There was a problem adding the information to the database.");
+      if (err) return res.status(500).send({ message : err.message });
       res.status(200).send(user);
     });
 

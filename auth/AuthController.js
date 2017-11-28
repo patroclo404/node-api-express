@@ -3,6 +3,8 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
+var _ = require('lodash');
+
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
@@ -17,7 +19,11 @@ var  VerifyToken  = require('./VerifyToken');
 
 
 router.post('/register'  ,function(req, res) {
+  _.is
   
+  if( req.body.password === undefined || req.body.password.length < 6 )
+    res.status(400).send({message : 'Password is required or is lower than 6'});
+
   var hashedPassword = bcrypt.hashSync(req.body.password, 8);
 
   User.create({
@@ -25,7 +31,7 @@ router.post('/register'  ,function(req, res) {
     email : req.body.email,
     password : hashedPassword
   },function (error, user) {
-    	if (error) return res.status(500).send({message : "There was a problem registering the user.", error})
+    if (error) return res.status(500).send({ message : error.message, error });
 	    else{
 		    // create a token
 		    var token = jwt.sign({ id: user._id }, config.secret, {
