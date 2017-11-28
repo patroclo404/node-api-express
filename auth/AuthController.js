@@ -19,10 +19,9 @@ var  VerifyToken  = require('./VerifyToken');
 
 
 router.post('/register'  ,function(req, res) {
-  _.is
   
   if( req.body.password === undefined || req.body.password.length < 6 )
-    res.status(400).send({message : 'Password is required or is lower than 6'});
+    return res.status(400).send({message : 'Password is required or is lower than 6'});
 
   var hashedPassword = bcrypt.hashSync(req.body.password, 8);
 
